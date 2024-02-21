@@ -1,0 +1,265 @@
+#clase del 22 enero/24
+#recomendado ubuntu normal para entorno grafico
+protocolo ldap
+
+$ sudo apt-get update
+$ sudo apt-get install slapd ldap-utils ldap-account-manager
+
+#solicita contraseña administrador de ldap
+
+#se crea base de datos de ldap
+
+$ sudo dpkg-reconfigure slapd
+
+#indicar nombre de dominio de ldap y clave del usuario administrador
+
+#no
+#clase.es
+#ies
+#1234
+#desea que se borre... si
+#desea mover la base... no
+
+
+#comprobamos el resultado de la instalacion con 
+slapcat
+
+#tareas previas
+
+#asignar io fija al servidor
+# fichero /etc/host  -> enlazar nombre de equipo, el dominio ldap y la ip estatica
+
+127.0.0.1   localhost
+192.168.50.2 server.clase.es server
+
+# /etc/hostname -> solo una linea con el nombre del servidor
+
+server
+
+#lanzar herramienta grafica
+
+#firefox -> localhost/lam
+
+#login
+#ajustes generales
+
+#contreseña maestra ---> la primera vez es lam
+#cambiar contraseña maestra 
+nueva constraeña maestra
+
+#perfiles del servidor
+1234
+1234
+
+#configuracion gneral
+
+zona horaria españa/ madrid
+
+#herramientas
+
+editor de OU
+
+sufijo del arbol dc=clase, dc=es
+
+preferencias de seguridad
+lista fijada
+lista de usuarios validos --> cd=admin,dc=clase,dc=es
+
+contraeeña del perfil --> la misma contraseña de siempre
+
+# salimos y entramos para configurar usuarios y grupos depues de reiniciar equipo
+
+# tipos de cuentas
+
+#configurar tipos de cuentasactivos
+
+usuarios -> sufiijo ldap -> oy=usuarios, dc=clase, dc=es
+grupos -> sufijo ldap--> ou=ou=grupos,dc=clase,dc=es
+
+# salimos y entramos para configurar usuarios y grupos depues de reiniciar equipo
+
+#creacion de usuarios y grupos
+
+#pregunta si creres crear las unidades organizativas que hay. Si
+
+#creamos grupo
+
+nuevo grupo -> nombre del grupo ->users1 -> guarar
+
+#creamos usuario 
+
+nuevo usuario  -> adrian
+
+#revisar pestaña unix
+
+
+
+########Cliente ubuntu########################
+
+sudo apt-get update
+sudo apt-get install libnss-ldab libpam-ldap ldap-utils nfs-common ldap-auth-config
+
+
+# sale pantalla 
+
+sudo dpkg-reconfigure ldap-auth-config
+
+# ventana en modeo texto
+
+cambiar .. sí
+
+#server uniform identifier...
+
+ldap://192.168.1.2   # debe quedar exactamente asi o fallara
+
+#distinguished name of the search base  
+
+dc=clase, dc=es
+
+#version 
+3
+#make localroot Database admin
+
+si
+#does database requirte login 
+
+no
+
+#ldqap account for root
+
+cn=admin,dc=clase,dc=es
+
+#password de root de ldap 
+
+1234
+
+aceptar
+md5
+-------primera parte de la configuracion finalizada -----
+#cambiar ficheros
+
+/etc/nsswitch.conf
+
+passwd:       files sytemd ldap
+group         files systemd ldap
+shadow        files ldap
+
+
+/etc/pam.d/common-password
+
+quitar primer use-authlok
+
+/etc/pam-d/common-session
+
+
+añadimos al final de archivo
+
+session required   pam_mkhomedir.so  skel=/etc/skel  umask=077
+
+hay que reiniciar el equipo
+
+### poner contraseña en el servidor
+
+en el lam
+
+suaarios > edita > unix > establecer contraseña > guardar
+
+####### cliente windows #########
+
+
+instalar programa pgina
+pgina.org
+
+pgina 3.1.2.0
+
+entramos con un usuario local 
+
+plugin selection
+
+lDAP check authentication authoritation > configuracion
+
+ip del servidor
+
+group DN pattem   cn=%g,ou=grupos,dc=clase,dc=es
+
+user DN pattem    cn=%u,ou=usuarios, dc=clase,dc=es
+
+guardar
+
+en simulacion podemos ver si se puede loguear el suario
+
+en windows hay que poner el nombre completo
+
+Adrian Lopez
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
